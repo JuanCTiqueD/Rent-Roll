@@ -48,3 +48,17 @@ exports.deleteVehicle = async (req, res) => {
     res.status(500).json({ error: 'Error al eliminar el vehículo' });
   }
 };
+
+// Obtener un vehículo por ID
+exports.getVehicleById = async (req, res) => {
+  try {
+    const vehicle = await Vehicle.findByPk(req.params.id);
+    if (vehicle) {
+      res.render('vehicles/vehicle', { vehiculo: vehicle });
+    } else {
+      res.status(404).json({ error: 'Vehículo no encontrado' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener el vehículo' });
+  }
+};

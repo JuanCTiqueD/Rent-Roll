@@ -69,3 +69,26 @@ CREATE TABLE IF NOT EXISTS roles_permisos (
   FOREIGN KEY (id_rol) REFERENCES roles(id_rol) ON DELETE CASCADE,
   FOREIGN KEY (id_permiso) REFERENCES permisos(id_permiso) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+-- Tabla de tipoVehiculo
+CREATE TABLE IF NOT EXISTS tipoVehiculo (
+  id_tipo INT PRIMARY KEY AUTO_INCREMENT,
+  nombre_tipo VARCHAR(50) NOT NULL,
+  descripcion TEXT
+) ENGINE=InnoDB;
+
+-- Tabla de ubicacion
+CREATE TABLE IF NOT EXISTS ubicacion (
+  id_ubicacion INT PRIMARY KEY AUTO_INCREMENT,
+  nombre_ubicacion VARCHAR(50) NOT NULL,
+  direccion VARCHAR(100),
+  ciudad VARCHAR(50),
+  estado VARCHAR(50)
+) ENGINE=InnoDB;
+
+-- Modificación de la tabla vehiculos para añadir columnas de tipo y ubicacion
+ALTER TABLE vehiculos
+  ADD COLUMN id_tipo INT,
+  ADD COLUMN id_ubicacion INT,
+  ADD CONSTRAINT fk_tipo_vehiculo FOREIGN KEY (id_tipo) REFERENCES tipoVehiculo(id_tipo) ON DELETE SET NULL,
+  ADD CONSTRAINT fk_ubicacion FOREIGN KEY (id_ubicacion) REFERENCES ubicacion(id_ubicacion) ON DELETE SET NULL;

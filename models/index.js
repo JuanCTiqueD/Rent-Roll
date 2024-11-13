@@ -6,6 +6,8 @@ const RolePermission = require('./role_permissionModel');
 const Vehicle = require('./vehicleModel');
 const Reservation = require('./reservationModel');
 const Feedback = require('./feedbackModel');
+const VehicleType = require('./vehicleTypeModel');
+const Location = require('./locationModel');
 
 // Relaciones
 User.belongsTo(Role, { foreignKey: 'id_rol', onDelete: 'SET NULL' });
@@ -26,6 +28,13 @@ Reservation.hasMany(Feedback, { foreignKey: 'id_reserva' });
 Role.belongsToMany(Permission, { through: RolePermission, foreignKey: 'id_rol', onDelete: 'CASCADE' });
 Permission.belongsToMany(Role, { through: RolePermission, foreignKey: 'id_permiso', onDelete: 'CASCADE' });
 
+// Nuevas relaciones
+Vehicle.belongsTo(VehicleType, { foreignKey: 'id_type', onDelete: 'SET NULL' });
+VehicleType.hasMany(Vehicle, { foreignKey: 'id_type' });
+
+Vehicle.belongsTo(Location, { foreignKey: 'id_location', onDelete: 'SET NULL' });
+Location.hasMany(Vehicle, { foreignKey: 'id_location' });
+
 module.exports = {
   sequelize,
   User,
@@ -35,4 +44,6 @@ module.exports = {
   Vehicle,
   Reservation,
   Feedback,
+  VehicleType,
+  Location,
 };

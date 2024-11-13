@@ -31,6 +31,20 @@ const Vehicle = sequelize.define('Vehicle', {
     type: DataTypes.BLOB('long'),
     allowNull: false,
   },
+  id_tipo: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'TipoVehiculo',
+      key: 'id_tipo',
+    },
+  },
+  id_ubicacion: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'Ubicacion',
+      key: 'id_ubicacion',
+    },
+  },
 }, {
   tableName: 'vehiculos',
   timestamps: false,

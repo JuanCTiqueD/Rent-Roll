@@ -1,0 +1,32 @@
+body{
+    margin: 0;
+    min-height: 100vh; /* Asegurarse de que el fondo ocupe toda la altura de la pantalla */
+    background-image: url('../images/car4.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 40%;  /* La imagen ocupará el 50% del ancho y el 100% de la altura */
+    background-position: top center; /* Posiciona la imagen a la derecha y al centro */
+    background-attachment: fixed; /* Esto hace que la imagen se quede fija mientras se hace scroll */
+
+}
+
+.card{
+    margin-top: 10%;
+}
+
+.titulo{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con transparencia */
+    position: relative;
+    text-align: center;
+    padding: 5px 15px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+.form-group{
+    margin-bottom: 15px;
+}

@@ -1,10 +1,11 @@
-// routes/vehicleRoutes.js
 const express = require('express');
 const router = express.Router();
+const vehicleController = require('../controllers/vehicleController');
 
-// Ruta para la vista del vehículo
-router.get('/', (req, res) => {
-  res.render('vehicles/vehicle');
-});
+// Ruta para obtener todos los vehículos
+router.get('/', vehicleController.getVehicles);
+
+// Ruta para ver el detalle de un vehículo por ID
+router.get('/vehicle/:id', vehicleController.getVehicleById);
 
 module.exports = router;

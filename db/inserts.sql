@@ -48,3 +48,41 @@ INSERT INTO roles_permisos (id_rol, id_permiso) VALUES
 -- Asignar permisos al Cliente (id_rol = 2)
 INSERT INTO roles_permisos (id_rol, id_permiso) VALUES
 (2, 1), (2, 5), (2, 6), (2, 8);
+
+-- Insertar tipos de vehículos
+INSERT INTO tipoVehiculo (nombre_tipo, descripcion) VALUES
+('Sedán', 'Vehículo de cuatro puertas ideal para uso urbano'),
+('SUV', 'Vehículo deportivo utilitario con mayor espacio y tracción'),
+('Camioneta', 'Vehículo de trabajo con caja para carga'),
+('Deportivo', 'Vehículo de alto rendimiento y velocidad');
+
+-- Insertar ubicaciones
+INSERT INTO ubicacion (nombre_ubicacion, direccion, ciudad, estado) VALUES
+('Sucursal Central', 'Avenida Principal 123', 'Ciudad Central', 'Estado 1'),
+('Sucursal Norte', 'Calle Norte 456', 'Ciudad Norte', 'Estado 2'),
+('Sucursal Sur', 'Carrera Sur 789', 'Ciudad Sur', 'Estado 3');
+
+-- Actualizar vehículos para asignarles tipo, ubicación y una imagen por defecto
+UPDATE vehiculos SET 
+  id_tipo = 1, 
+  id_ubicacion = 1, 
+  imagen = 'imagen_base64' 
+WHERE id_vehiculo = 1;
+
+UPDATE vehiculos SET 
+  id_tipo = 2, 
+  id_ubicacion = 2, 
+  imagen = 'imagen_base64' 
+WHERE id_vehiculo = 2;
+
+UPDATE vehiculos SET 
+  id_tipo = 3, 
+  id_ubicacion = 3, 
+  imagen = 'imagen_base64' 
+WHERE id_vehiculo = 3;
+
+UPDATE vehiculos SET 
+  id_tipo = 4, 
+  id_ubicacion = 1, 
+  imagen = 'imagen_base64' 
+WHERE id_vehiculo = 4;
