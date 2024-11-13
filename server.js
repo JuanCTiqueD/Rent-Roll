@@ -1,9 +1,11 @@
+// server.js
 const express = require('express');
 const path = require('path');
 const notFoundMiddleware = require('./middlewares/notFoundMiddleware');
 const errorHandler = require('./middlewares/errorHandler');
 const serverConfig = require('./config/server.config');
 const connectToDatabase = require('./utils/database'); // Importa la función de conexión a la base de datos
+const session = require('express-session');
 
 const app = express();
 const PORT = serverConfig.port;
@@ -11,6 +13,14 @@ const PORT = serverConfig.port;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+  secret: 'tuSecretoDeSesion',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Cambia a true si usas HTTPS
+}));
+
 
 // Middleware para analizar datos en JSON
 app.use(express.json());
@@ -28,8 +38,10 @@ app.use('/vehicles', vehicleRoutes);
 app.use('/reservations', reservationRoutes);
 app.use('/feedback', feedbackRoutes);
 
-app.get('/', (req, res) => {
-  res.render('index');
+// Configura la ruta principal para usar el controlador de vehículos
+app.get('/', async (req, res) => {
+  const user = req.session.user || null; // Obtén el usuario desde la sesión
+  res.render('index', { user });
 });
 
 app.use(notFoundMiddleware);

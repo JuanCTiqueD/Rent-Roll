@@ -37,14 +37,28 @@ exports.login = async (req, res) => {
       return res.redirect('/auth/login?error=Correo o contraseña incorrectos');
     }
 
-    // Genera el token después de verificar el usuario y la contraseña
-    const token = jwt.sign({ id: user.id_usuarios, rol: user.id_rol }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // Almacena el usuario en la sesión después de una autenticación exitosa
+    req.session.user = {
+      id: user.id_usuarios,
+      nombre: user.nombre,
+      rol: user.id_rol
+    };
 
-    // Guarda el token en una cookie o envíalo en la respuesta
-    res.cookie('token', token, { httpOnly: true });
-    res.redirect('/auth/register?success=Inicio de sesión exitoso');
+    res.redirect('/'); // Redirige a la página principal
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
     res.redirect('/auth/login?error=Ocurrió un error al iniciar sesión');
   }
+};
+
+// Cerrar sesión
+exports.logout = (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      console.error('Error al cerrar sesión:', err);
+      return res.redirect('/?error=Error al cerrar sesión');
+    }
+    res.clearCookie('token');
+    res.redirect('/');
+  });
 };

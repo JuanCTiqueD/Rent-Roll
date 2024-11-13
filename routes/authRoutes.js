@@ -19,4 +19,6 @@ router.get('/register', (req, res) => {
 // Ruta para manejar el registro
 router.post('/register', authController.register);
 
+router.get('/logout', authController.logout);
+
 module.exports = router;
