@@ -7,7 +7,14 @@ exports.register = async (req, res) => {
   try {
     const { nombre, correo, contrasena } = req.body;
     const hashedPassword = await bcrypt.hash(contrasena, 10);
-    const user = await User.create({ nombre, correo, contrasena: hashedPassword });
+
+    const user = await User.create({
+      nombre,
+      correo,
+      contrasena: hashedPassword,
+      id_rol: 2,
+    });
+
     res.redirect('/auth/login?success=Usuario registrado exitosamente');
   } catch (error) {
     console.error('Error al registrar el usuario:', error);
