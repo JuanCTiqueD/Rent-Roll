@@ -159,7 +159,83 @@
         </div>
     </section>
 
+<!-- Carrusel de Mis Reservas (Visible solo si hay sesión activa) -->
+<% if (user && reservations.length > 0) { %>
+    <section class="car-carousel">
+        <div class="container">
+            <h2 class="text-center mb-5">Mis Reservas</h2>
+            
+            <div id="userReservationsCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#userReservationsCarousel" data-bs-slide-to="0" class="active"></button>
+                    <% for (let i = 1; i < reservations.length; i++) { %>
+                        <button type="button" data-bs-target="#userReservationsCarousel" data-bs-slide-to="<%= i %>"></button>
+                    <% } %>
+                </div>
+                
+                <div class="carousel-inner">
+                    <% reservations.forEach((reserva, index) => { %>
+                        <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <a href="/vehicles/vehicle/<%= reserva.Vehicle.id_vehiculo %>">
+                                        <div class="car-card"> 
+                                            <img src="data:image/jpeg;base64,<%= reserva.Vehicle.imagen.toString('base64') %>" alt="Imagen de <%= reserva.Vehicle.marca %>" class="w-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title"><%= reserva.Vehicle.modelo %></h5>
+                                                <p class="text-muted"> Modelo: <%= reserva.Vehicle.anio %></p>
+                                                <p class="text-muted">Desde $<%= reserva.Vehicle.precio_dia %>/día</p>
+                                                <div class="car-features">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="fas fa-door-closed feature-icon"></i>
+                                                        <span>4 puertas</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="fas fa-snowflake feature-icon"></i>
+                                                        <span>Aire acondicionado</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="fas fa-cog feature-icon"></i>
+                                                        <span>Dirección asistida</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-lock feature-icon"></i>
+                                                        <span>Cierre centralizado</span>
+                                                    </div>
+                                                </div>
+                                                <!-- Botones de Finalizar y Cancelar -->
+                                                <div class="d-flex justify-content-center mt-3">
+                                                    <a href="/finalizar/<%= reserva.id_reserva %>" class="btn btn-warning fs-4 w-50 mb-2 mx-auto">Finalizar</a>
+                                                    <form action="/cancelar/<%= reserva.id_reserva %>" method="post" class="w-50">
+                                                        <input type="hidden" name="id_vehiculo" id="id_vehiculo" value="<%= reserva.Vehicle.id_vehiculo %>">
+                                                        <button class="btn btn-secondary fs-4 w-100 mb-2">Cancelar</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
 
+                <button class="carousel-control-prev" type="button" data-bs-target="#userReservationsCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#userReservationsCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+        </div>
+    </section>
+<% } else if (user) { %>
+    <p class="text-center mt-5">No tienes reservas actualmente.</p>
+<% } %>
+
+    
 
     <!-- Footer -->
     <footer class="bg-light pt-5 mt-5">

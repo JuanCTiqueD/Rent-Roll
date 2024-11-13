@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
+const User = require('./userModel');
+const Vehicle = require('./vehicleModel');
 
 const Reservation = sequelize.define('Reservation', {
   id_reserva: {
@@ -7,21 +9,21 @@ const Reservation = sequelize.define('Reservation', {
     primaryKey: true,
     autoIncrement: true,
   },
-  id_usuario: { // Clave foránea hacia usuarios
+  id_usuario: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'usuarios',
-      key: 'id_usuarios'
+      model: User,
+      key: 'id_usuarios',
     },
-    allowNull: false
+    onDelete: 'CASCADE',
   },
-  id_vehiculo: { // Clave foránea hacia vehiculos
+  id_vehiculo: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'vehiculos',
-      key: 'id_vehiculo'
+      model: Vehicle,
+      key: 'id_vehiculo',
     },
-    allowNull: true
+    onDelete: 'SET NULL',
   },
   fecha_inicio: {
     type: DataTypes.DATE,
@@ -43,5 +45,8 @@ const Reservation = sequelize.define('Reservation', {
   tableName: 'reservas',
   timestamps: false,
 });
+
+Reservation.belongsTo(User, { foreignKey: 'id_usuario' });
+Reservation.belongsTo(Vehicle, { foreignKey: 'id_vehiculo' });
 
 module.exports = Reservation;

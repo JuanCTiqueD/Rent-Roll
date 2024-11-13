@@ -1,3 +1,4 @@
+// models/permissionModel.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 
@@ -13,6 +14,7 @@ const Permission = sequelize.define('Permission', {
   },
   descripcion: {
     type: DataTypes.TEXT,
+    allowNull: true,
   },
 }, {
   tableName: 'permisos',

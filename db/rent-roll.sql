@@ -7,6 +7,22 @@ CREATE TABLE IF NOT EXISTS roles (
   nombre_rol VARCHAR(50) NOT NULL
 ) ENGINE=InnoDB;
 
+-- Tabla de permisos
+CREATE TABLE IF NOT EXISTS permisos (
+  id_permiso INT PRIMARY KEY AUTO_INCREMENT,
+  nombre_permiso VARCHAR(50) NOT NULL,
+  descripcion TEXT
+) ENGINE=InnoDB;
+
+-- Tabla intermedia para la relación muchos a muchos entre roles y permisos
+CREATE TABLE IF NOT EXISTS roles_permisos (
+  id_rol INT,
+  id_permiso INT,
+  PRIMARY KEY (id_rol, id_permiso),
+  FOREIGN KEY (id_rol) REFERENCES roles(id_rol) ON DELETE CASCADE,
+  FOREIGN KEY (id_permiso) REFERENCES permisos(id_permiso) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 -- Tabla de usuarios
 CREATE TABLE IF NOT EXISTS usuarios (
   id_usuarios INT PRIMARY KEY AUTO_INCREMENT,
@@ -18,6 +34,22 @@ CREATE TABLE IF NOT EXISTS usuarios (
   FOREIGN KEY (id_rol) REFERENCES roles(id_rol) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
+-- Tabla de tipo de vehículo
+CREATE TABLE IF NOT EXISTS tipoVehiculo (
+  id_tipo INT PRIMARY KEY AUTO_INCREMENT,
+  nombre_tipo VARCHAR(50) NOT NULL,
+  descripcion TEXT
+) ENGINE=InnoDB;
+
+-- Tabla de ubicación
+CREATE TABLE IF NOT EXISTS ubicacion (
+  id_ubicacion INT PRIMARY KEY AUTO_INCREMENT,
+  nombre_ubicacion VARCHAR(50) NOT NULL,
+  direccion VARCHAR(100),
+  ciudad VARCHAR(50),
+  estado VARCHAR(50)
+) ENGINE=InnoDB;
+
 -- Tabla de vehículos
 CREATE TABLE IF NOT EXISTS vehiculos (
   id_vehiculo INT PRIMARY KEY AUTO_INCREMENT,
@@ -26,7 +58,11 @@ CREATE TABLE IF NOT EXISTS vehiculos (
   anio INT NOT NULL,
   precio_dia DECIMAL(10,2) NOT NULL,
   disponibilidad TINYINT(1) NOT NULL,
-  imagen LONGBLOB NOT NULL
+  imagen LONGBLOB NOT NULL,
+  id_tipo INT,
+  id_ubicacion INT,
+  FOREIGN KEY (id_tipo) REFERENCES tipoVehiculo(id_tipo) ON DELETE SET NULL,
+  FOREIGN KEY (id_ubicacion) REFERENCES ubicacion(id_ubicacion) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 -- Tabla de reservas
@@ -53,42 +89,3 @@ CREATE TABLE IF NOT EXISTS feedback (
   FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios) ON DELETE CASCADE,
   FOREIGN KEY (id_reserva) REFERENCES reservas(id_reserva) ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
--- Tabla de permisos
-CREATE TABLE IF NOT EXISTS permisos (
-  id_permiso INT PRIMARY KEY AUTO_INCREMENT,
-  nombre_permiso VARCHAR(50) NOT NULL,
-  descripcion TEXT
-) ENGINE=InnoDB;
-
--- Tabla intermedia para la relación muchos a muchos entre roles y permisos
-CREATE TABLE IF NOT EXISTS roles_permisos (
-  id_rol INT,
-  id_permiso INT,
-  PRIMARY KEY (id_rol, id_permiso),
-  FOREIGN KEY (id_rol) REFERENCES roles(id_rol) ON DELETE CASCADE,
-  FOREIGN KEY (id_permiso) REFERENCES permisos(id_permiso) ON DELETE CASCADE
-) ENGINE=InnoDB;
-
--- Tabla de tipoVehiculo
-CREATE TABLE IF NOT EXISTS tipoVehiculo (
-  id_tipo INT PRIMARY KEY AUTO_INCREMENT,
-  nombre_tipo VARCHAR(50) NOT NULL,
-  descripcion TEXT
-) ENGINE=InnoDB;
-
--- Tabla de ubicacion
-CREATE TABLE IF NOT EXISTS ubicacion (
-  id_ubicacion INT PRIMARY KEY AUTO_INCREMENT,
-  nombre_ubicacion VARCHAR(50) NOT NULL,
-  direccion VARCHAR(100),
-  ciudad VARCHAR(50),
-  estado VARCHAR(50)
-) ENGINE=InnoDB;
-
--- Modificación de la tabla vehiculos para añadir columnas de tipo y ubicacion
-ALTER TABLE vehiculos
-  ADD COLUMN id_tipo INT,
-  ADD COLUMN id_ubicacion INT,
-  ADD CONSTRAINT fk_tipo_vehiculo FOREIGN KEY (id_tipo) REFERENCES tipoVehiculo(id_tipo) ON DELETE SET NULL,
-  ADD CONSTRAINT fk_ubicacion FOREIGN KEY (id_ubicacion) REFERENCES ubicacion(id_ubicacion) ON DELETE SET NULL;

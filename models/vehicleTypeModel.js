@@ -1,4 +1,3 @@
-// vehicleTypeModel.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 
@@ -14,7 +13,6 @@ const VehicleType = sequelize.define('VehicleType', {
   },
   descripcion: {
     type: DataTypes.TEXT,
-    allowNull: true,
   },
 }, {
   tableName: 'tipoVehiculo',

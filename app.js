@@ -10,6 +10,7 @@ const session = require('express-session');
 const Location = require('./models/locationModel');
 const VehicleType = require('./models/vehicleTypeModel');
 const Vehicle = require('./models/vehicleModel');
+const Reservation = require('./models/reservationModel');
 
 const app = express();
 const PORT = serverConfig.port;
@@ -38,19 +39,40 @@ app.use('/vehicles', vehicleRoutes);
 app.use('/reservations', reservationRoutes);
 app.use('/feedback', feedbackRoutes);
 
-// Ruta principal para cargar ubicaciones y tipos de vehículos
+// Ruta principal para cargar ubicaciones, tipos de vehículos, vehículos disponibles y reservas del usuario
 app.get('/', async (req, res) => {
   const user = req.session.user || null;
 
   try {
-    // Obtener ubicaciones, tipos de vehículos y todos los vehículos disponibles
+    console.log("Obteniendo ubicaciones y tipos de vehículos...");
     const ubicaciones = await Location.findAll();
     const tiposVehiculo = await VehicleType.findAll();
-    const vehicles = await Vehicle.findAll({ where: { disponibilidad: 1 } }); // Solo vehículos disponibles
+    
+    console.log("Obteniendo vehículos disponibles...");
+    const vehicles = await Vehicle.findAll({ where: { disponibilidad: 1 } });
+    console.log("Vehículos disponibles obtenidos");
 
-    res.render('index', { user, ubicaciones, tiposVehiculo, vehicles });
+    let userReservations = [];
+    if (user && user.id_usuario) { // Asegúrate de que haya un usuario en sesión
+      console.log(`Obteniendo reservas para el usuario con ID: ${user.id_usuario}`);
+      
+      userReservations = await Reservation.findAll({
+        where: { id_usuario: user.id_usuario },
+        include: [
+          {
+            model: Vehicle,
+            attributes: ['marca', 'modelo', 'anio', 'precio_dia', 'imagen', 'id_vehiculo'],
+          },
+        ],
+      });
+      console.log("Reservas del usuario obtenidas:", userReservations.length);
+    } else {
+      console.log("No hay usuario en sesión.");
+    }
+
+    res.render('index', { user, ubicaciones, tiposVehiculo, vehicles, reservations: userReservations });
   } catch (error) {
-    console.error('Error al obtener ubicaciones o tipos de vehículos:', error);
+    console.error('Error al obtener ubicaciones, tipos de vehículos o reservas:', error);
     res.status(500).send('Error al cargar la página principal');
   }
 });
