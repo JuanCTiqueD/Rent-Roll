@@ -1,0 +1,125 @@
+.portada-header {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('../images/car.jpg') center/cover;
+    min-height: 100vh;
+    position: relative;
+}
+
+.navbar {
+    background: transparent !important;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+    padding-top: 1.5rem;
+}
+
+.navbar-brand, .nav-link, .navbar .btn-outline-primary {
+    color: white !important;
+}
+
+.navbar .btn-outline-primary {
+    border-color: white;
+}
+
+.navbar .btn-outline-primary:hover {
+    background-color: white;
+    color: #0d6efd !important;
+}
+
+.portada-content {
+    padding-top: 15rem;
+    color: white;
+}
+
+.search-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+/* Estilos del carrusel */
+.car-carousel {
+    padding: 2rem 0;
+    background-color: #f8f9fa;
+}
+
+.car-carousel .carousel-item {
+    padding: 0 3rem;
+}
+
+.car-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin: 1rem;
+    transition: transform 0.3s;
+}
+
+.car-card:hover {
+    transform: translateY(-5px);
+}
+
+.car-features {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-top: 1px solid #eee;
+}
+
+.feature-icon {
+    font-size: 1.2rem;
+    color: #0d6efd;
+    width: 24px;
+    margin-right: 8px;
+}
+
+/* Controles del carrusel */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(13, 110, 253, 0.8);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.carousel-control-prev {
+    left: 1rem;
+}
+
+.carousel-control-next {
+    right: 1rem;
+}
+
+.carousel-indicators {
+    bottom: -3rem;
+}
+
+.carousel-indicators button {
+    background-color: #0d6efd;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+    .hero-content {
+        padding-top: 10rem;
+    }
+    
+    .car-carousel .carousel-item {
+        padding: 0 1rem;
+    }
+    
+    .car-card {
+        margin: 0.5rem;
+    }
+}
+
+.col-md-4 a{
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}

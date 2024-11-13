@@ -1,7 +1,7 @@
 {
   "name": "rent-roll",
   "description": "",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "server.js",
   "scripts": {
     "dev": "npx nodemon server.js",
@@ -10,7 +10,9 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "mysql2": "^3.11.4",
+    "sequelize": "^6.37.5"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
