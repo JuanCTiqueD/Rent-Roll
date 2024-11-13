@@ -11,7 +11,6 @@
 <body>
     <!-- Header y Portada Section -->
     <div class="portada-header">
-        <!-- Navigation -->
         <nav class="navbar navbar-expand-lg">
             <div class="container">
                 <a class="navbar-brand fw-bold" href="/">Rent & Roll</a>
@@ -43,14 +42,13 @@
                             <a href="/auth/logout" class="btn btn-outline-primary me-2">Log out</a>
                         <% } else { %>
                             <a href="/auth/login" class="btn btn-outline-primary me-2">Login</a>
-                        <a href="/auth/register" class="btn btn-primary">Registro</a>
+                            <a href="/auth/register" class="btn btn-primary">Registro</a>
                         <% } %>
                     </div>
                 </div>
             </div>
         </nav>
 
-        <!-- Portada Content -->
         <div class="container">
             <div class="row portada-content">
                 <div class="col-md-6">
@@ -58,6 +56,7 @@
                     <p class="lead mb-4">Descubre nuestra amplia selección de vehículos y encuentra el perfecto para tu próxima aventura</p>
                     <div class="card search-card">
                         <div class="card-body p-4">
+                            <!-- Formulario de búsqueda -->
                             <form action="/busqueda" method="post">
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Lugar de retirada</label>
@@ -65,9 +64,9 @@
                                         <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                                         <select class="form-select" name="lugar" id="lugar">
                                             <option value="">Seleccione ubicación</option>
-                                            <option value="Centro">Centro</option>
-                                            <option value="Aeropuerto">Aeropuerto</option>
-                                            <option value="Terminal">Terminal</option>
+                                            <% ubicaciones.forEach(function(ubicacion) { %>
+                                                <option value="<%= ubicacion.id_ubicacion %>"><%= ubicacion.nombre_ubicacion %></option>
+                                            <% }) %>
                                         </select>
                                     </div>
                                 </div>
@@ -77,9 +76,9 @@
                                         <span class="input-group-text"><i class="fas fa-car"></i></span>
                                         <select class="form-select" name="tipo" id="tipo">
                                             <option value="">Seleccione tipo</option>
-                                            <option value="Económico">Económico</option>
-                                            <option value="SUV">SUV</option>
-                                            <option value="Deportivo">Deportivo</option>
+                                            <% tiposVehiculo.forEach(function(tipo) { %>
+                                                <option value="<%= tipo.id_tipo %>"><%= tipo.nombre_tipo %></option>
+                                            <% }) %>
                                         </select>
                                     </div>
                                 </div>
@@ -91,6 +90,76 @@
             </div>
         </div>
     </div>
+
+    <!-- Sección de Carrusel -->
+    <section class="car-carousel">
+        <div class="container">
+            <h2 class="text-center mb-5">Mejores opciones para reservar</h2>
+            
+            <div id="carCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#carCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#carCarousel" data-bs-slide-to="2"></button>
+                </div>
+                
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row">
+                            <% vehicles.forEach((vehiculo) => { %>
+                            <div class="col-md-4">
+                                <a href="/vehiculo/<%= vehiculo.id_vehiculo %>"> 
+                                    <div class="car-card"> 
+                                        <img src="data:image/jpeg;base64,<%= vehiculo.imagen.toString('base64') %>" alt="Imagen de <%= vehiculo.marca %>" class="w-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= vehiculo.modelo %></h5>
+                                            <p class="text-muted"> Modelo: <%= vehiculo.anio %></p>
+                                            <p class="text-muted">Desde $<%= vehiculo.precio_dia %>/día</p>
+                                            <div class="car-features">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <i class="fas fa-door-closed feature-icon"></i>
+                                                    <span>4 puertas</span>
+                                                </div>
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <i class="fas fa-snowflake feature-icon"></i>
+                                                    <span>Aire acondicionado</span>
+                                                </div>
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <i class="fas fa-cog feature-icon"></i>
+                                                    <span>Dirección asistida</span>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-lock feature-icon"></i>
+                                                    <span>Cierre centralizado</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <% }) %>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="/feedback" class="btn btn-lg btn-primary">Ver todos los grupos</a>
+            </div>
+        </div>
+    </section>
+
+
 
     <!-- Footer -->
     <footer class="bg-light pt-5 mt-5">
@@ -135,6 +204,5 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/js.js"></script>
 </body>
 </html>

@@ -1,17 +1,18 @@
+// vehicleTypeModel.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 
 const VehicleType = sequelize.define('VehicleType', {
-  id_type: {
+  id_tipo: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  type_name: {
+  nombre_tipo: {
     type: DataTypes.STRING(50),
     allowNull: false,
   },
-  description: {
+  descripcion: {
     type: DataTypes.TEXT,
     allowNull: true,
   },

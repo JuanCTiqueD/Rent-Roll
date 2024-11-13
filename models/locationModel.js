@@ -1,25 +1,26 @@
+// locationModel.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 
 const Location = sequelize.define('Location', {
-  id_location: {
+  id_ubicacion: {  // Cambiado para que coincida con la base de datos
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  location_name: {
+  nombre_ubicacion: {  // Para coincidir con la base de datos
     type: DataTypes.STRING(50),
     allowNull: false,
   },
-  address: {
+  direccion: {
     type: DataTypes.STRING(100),
     allowNull: true,
   },
-  city: {
+  ciudad: {
     type: DataTypes.STRING(50),
     allowNull: true,
   },
-  state: {
+  estado: {
     type: DataTypes.STRING(50),
     allowNull: true,
   },

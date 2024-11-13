@@ -1,4 +1,6 @@
 const Vehicle = require('../models/vehicleModel');
+const Location = require('../models/locationModel');
+const VehicleType = require('../models/vehicleTypeModel');
 
 // Obtener todos los vehículos
 exports.getVehicles = async (req, res) => {
@@ -61,5 +63,45 @@ exports.getVehicleById = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener el vehículo' });
+  }
+};
+
+exports.searchVehicles = async (req, res) => {
+  try {
+    const { lugar, tipo } = req.body; // Obtenemos los filtros desde el formulario de búsqueda
+
+    // Construimos la consulta de búsqueda con los filtros aplicados
+    const whereConditions = {};
+    if (lugar) {
+      whereConditions.id_ubicacion = lugar;
+    }
+    if (tipo) {
+      whereConditions.id_tipo = tipo;
+    }
+
+    // Ejecutamos la consulta con las condiciones definidas
+    const vehicles = await Vehicle.findAll({
+      where: whereConditions,
+      include: [
+        {
+          model: Location,
+          attributes: ['nombre_ubicacion'],
+        },
+        {
+          model: VehicleType,
+          attributes: ['nombre_tipo'],
+        }
+      ]
+    });
+
+    // Obtenemos los datos de las ubicaciones y tipos de vehículos para mostrarlos en el formulario de búsqueda
+    const ubicaciones = await Location.findAll();
+    const tiposVehiculo = await VehicleType.findAll();
+
+    // Renderizamos la vista index con los resultados de la búsqueda
+    res.render('index', { user: req.session.user || null, vehicles, ubicaciones, tiposVehiculo });
+  } catch (error) {
+    console.error("Error al buscar vehículos:", error);
+    res.status(500).send("Error interno del servidor");
   }
 };

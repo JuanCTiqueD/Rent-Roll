@@ -8,4 +8,7 @@ router.get('/', vehicleController.getVehicles);
 // Ruta para ver el detalle de un vehículo por ID
 router.get('/vehicle/:id', vehicleController.getVehicleById);
 
+// Ruta para buscar vehículos
+router.post('/busqueda', vehicleController.searchVehicles);
+
 module.exports = router;
