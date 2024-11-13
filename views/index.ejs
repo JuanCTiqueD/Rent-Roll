@@ -91,7 +91,7 @@
         </div>
     </div>
 
-    <!-- Sección de Carrusel -->
+    <!-- Sección de Carrusel Para ver vehiculos disponibles -->
     <section class="car-carousel">
         <div class="container">
             <h2 class="text-center mb-5">Mejores opciones para reservar</h2>
@@ -108,7 +108,7 @@
                         <div class="row">
                             <% vehicles.forEach((vehiculo) => { %>
                             <div class="col-md-4">
-                                <a href="/vehiculo/<%= vehiculo.id_vehiculo %>"> 
+                                <a href="/vehicles/vehicle/<%= vehiculo.id_vehiculo %>"> 
                                     <div class="car-card"> 
                                         <img src="data:image/jpeg;base64,<%= vehiculo.imagen.toString('base64') %>" alt="Imagen de <%= vehiculo.marca %>" class="w-100">
                                         <div class="card-body">
