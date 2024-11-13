@@ -12,6 +12,12 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Middleware para analizar datos en JSON
+app.use(express.json());
+
+// Middleware para analizar datos en x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
 const authRoutes = require('./routes/authRoutes');
 const vehicleRoutes = require('./routes/vehicleRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');

@@ -17,12 +17,16 @@
                 <div class="form-content">
                     <h1>Rent & Roll</h1>
                     <p class="subtitle">_______Inicio de sesión_______</p>
-                    <form action="/inicio" method="post">
+
+                    <!-- Muestra el mensaje de error si existe en la URL -->
+                    <div id="alert-message" class="alert alert-danger d-none"></div>
+
+                    <form action="/auth/login" method="post">
                         <label for="email">Ingrese su correo:</label>
                         <input type="email" name="correo" id="correo" required>
                         
                         <label for="password">Ingrese su contraseña:</label>
-                        <input type="password" name="contraseña" id="contraseña" required>
+                        <input type="password" name="contrasena" id="contrasena" required>
                         
                         <button type="submit">Ingresar</button>
                         <a href="/auth/register" class="registro_desde_login">Registrate</a>
@@ -30,6 +34,26 @@
                 </div>
             </div>
         </div>
-    <!-- </div>   -->
+        <script>
+            // Captura los parámetros de la URL
+            const params = new URLSearchParams(window.location.search);
+            const errorMessage = params.get('error');
+            const successMessage = params.get('success');
+    
+            // Mostrar mensajes de alerta si existen
+            if (errorMessage) {
+                const alertBox = document.getElementById('alert-message');
+                alertBox.classList.remove('d-none');
+                alertBox.classList.add('alert-danger');
+                alertBox.innerText = errorMessage;
+            }
+    
+            if (successMessage) {
+                const alertBox = document.getElementById('alert-message');
+                alertBox.classList.remove('d-none');
+                alertBox.classList.add('alert-success');
+                alertBox.innerText = successMessage;
+            }
+        </script>
 </body>
 </html>
