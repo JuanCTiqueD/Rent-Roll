@@ -3,19 +3,20 @@ const Feedback = require('../models/feedbackModel');
 // Crear un feedback
 exports.createFeedback = async (req, res) => {
   try {
-    const feedback = await Feedback.create(req.body);
-    res.status(201).json(feedback);
-  } catch (error) {
-    res.status(500).json({ error: 'Error al crear el feedback' });
-  }
-};
+    const { comentario, calificacion, id_usuario, id_reserva } = req.body;
 
-// Obtener todos los feedbacks
-exports.getFeedbacks = async (req, res) => {
-  try {
-    const feedbacks = await Feedback.findAll();
-    res.json(feedbacks);
+    // Crear el feedback en la base de datos
+    await Feedback.create({
+      comentario,
+      calificacion,
+      id_usuario,
+      id_reserva
+    });
+
+    // Redirigir a la página de inicio después de enviar el feedback
+    res.status(201).redirect('/');
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener los feedbacks' });
+    console.error('Error al crear el feedback:', error);
+    res.status(500).json({ error: 'Error al crear el feedback' });
   }
 };
