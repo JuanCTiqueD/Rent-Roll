@@ -16,4 +16,7 @@ router.get('/register', (req, res) => {
   res.render('auth/register');
 });
 
+// Ruta para manejar el registro
+router.post('/register', authController.register);
+
 module.exports = router;

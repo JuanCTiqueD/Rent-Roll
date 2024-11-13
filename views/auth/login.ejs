@@ -35,22 +35,21 @@
             </div>
         </div>
         <script>
-            // Captura los parámetros de la URL
+            // Captura mensajes de éxito o error desde la URL
             const params = new URLSearchParams(window.location.search);
             const errorMessage = params.get('error');
             const successMessage = params.get('success');
     
-            // Mostrar mensajes de alerta si existen
             if (errorMessage) {
                 const alertBox = document.getElementById('alert-message');
-                alertBox.classList.remove('d-none');
+                alertBox.classList.remove('d-none', 'alert-success');
                 alertBox.classList.add('alert-danger');
                 alertBox.innerText = errorMessage;
             }
     
             if (successMessage) {
                 const alertBox = document.getElementById('alert-message');
-                alertBox.classList.remove('d-none');
+                alertBox.classList.remove('d-none', 'alert-danger');
                 alertBox.classList.add('alert-success');
                 alertBox.innerText = successMessage;
             }
