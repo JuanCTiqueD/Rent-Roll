@@ -37,9 +37,9 @@ exports.login = async (req, res) => {
       return res.redirect('/auth/login?error=Correo o contraseña incorrectos');
     }
 
-    // Almacena el usuario en la sesión después de una autenticación exitosa
+    // Almacena el usuario en la sesión
     req.session.user = {
-      id: user.id_usuarios,
+      id_usuario: user.id_usuarios,
       nombre: user.nombre,
       rol: user.id_rol
     };

@@ -28,12 +28,11 @@ Reservation.hasMany(Feedback, { foreignKey: 'id_reserva' });
 Role.belongsToMany(Permission, { through: RolePermission, foreignKey: 'id_rol', onDelete: 'CASCADE' });
 Permission.belongsToMany(Role, { through: RolePermission, foreignKey: 'id_permiso', onDelete: 'CASCADE' });
 
-// Nuevas relaciones
-Vehicle.belongsTo(VehicleType, { foreignKey: 'id_type', onDelete: 'SET NULL' });
-VehicleType.hasMany(Vehicle, { foreignKey: 'id_type' });
+Vehicle.belongsTo(VehicleType, { foreignKey: 'id_tipo', onDelete: 'SET NULL' });
+VehicleType.hasMany(Vehicle, { foreignKey: 'id_tipo' });
 
-Vehicle.belongsTo(Location, { foreignKey: 'id_location', onDelete: 'SET NULL' });
-Location.hasMany(Vehicle, { foreignKey: 'id_location' });
+Vehicle.belongsTo(Location, { foreignKey: 'id_ubicacion', onDelete: 'SET NULL' });
+Location.hasMany(Vehicle, { foreignKey: 'id_ubicacion' });
 
 module.exports = {
   sequelize,

@@ -9,48 +9,88 @@
 </head>
 <body>
     <% if (vehiculo) { %>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 car-card">
-                <div class="card">
-                    <h2 class="titulo"><%= vehiculo.marca %></h2>
-                    <!-- Imagen del carro -->
-                    <img src="data:image/jpeg;base64,<%= vehiculo.imagen.toString('base64') %>" alt="Imagen de <%= vehiculo.marca %>" class="w-100">
-                    <div class="card-body">
-                        <form action="/reservations" method="post">
-                            <input type="hidden" name="id_vehiculo" value="<%= vehiculo.id_vehiculo %>">
-                            <input type="hidden" name="estado" value="reservado">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 car-card">
+                    <div class="card">
+                        <h2 class="titulo"><%= vehiculo.marca %></h2>
+                        <img src="data:image/jpeg;base64,<%= vehiculo.imagen.toString('base64') %>" alt="Imagen de <%= vehiculo.marca %>" class="w-100">
+                        <div class="card-body">
+                            <!-- Mostrar mensaje de error o éxito si existe -->
+                            <div id="alert-message" class="alert d-none"></div>
+        
+                            <!-- Formulario de reserva -->
+                            <form action="/reservations" method="post">
+                                <input type="hidden" name="id_vehiculo" value="<%= vehiculo.id_vehiculo %>">
+                                <input type="hidden" name="estado" value="reservado">
+        
+                                <% if (user) { %>
+                                    <!-- Incluir id_usuario si hay sesión -->
+                                    <input type="hidden" name="id_usuario" value="<%= user.id_usuario %>">
+                                <% } %>
+        
+                                <h5 class="card-title"><%= vehiculo.modelo %></h5>
+                                <p class="card-text"><strong>Año:</strong> <%= vehiculo.anio %></p>
+                                <p class="card-text"><strong>Precio por día:</strong> $ <i id="precio"><%= vehiculo.precio_dia %></i></p>
 
-                            <h5 class="card-title"><%= vehiculo.modelo %></h5>
-                            <p class="card-text"><strong>Año:</strong> <%= vehiculo.anio %></p>
-                            <p class="card-text"><strong>Precio por día:</strong> $ <i id="precio"><%= vehiculo.precio_dia %></i></p>
+                                <!-- Mostrar estado del vehículo -->
+                                <% if (!vehiculo.disponibilidad) { %>
+                                    <p class="text-danger">Este vehículo está actualmente reservado.</p>
+                                <% } %>
 
-                            <div class="form-group">
-                                <label for="fechaRetirada">Selecciona la fecha de retirada:</label>
-                                <input type="date" name="fechaRetirada" id="fechaRetirada" class="form-control">
-                            </div>
+                                <% if (vehiculo.disponibilidad) { %>
+                                    <div class="form-group">
+                                        <label for="fechaRetirada">Selecciona la fecha de retirada:</label>
+                                        <input type="date" name="fecha_inicio" id="fechaRetirada" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fechaDevolusion">Selecciona la fecha de devolución:</label>
+                                        <input type="date" name="fecha_fin" id="fechaDevolusion" class="form-control" required>
+                                    </div>
+                                    <div class="text-center" id="tarifaCarro">
+                                        <a class="btn btn-primary" id="botonTarifa" onclick="calcularTarifa()">Calcular Tarifa</a>
+                                    </div>
+                                <% } %>
 
-                            <div class="form-group">
-                                <label for="fechaDevolusion">Selecciona la fecha de devolución:</label>
-                                <input type="date" name="fechaDevolusion" id="fechaDevolusion" class="form-control">
-                            </div>
-                            
-                            <div class="text-center" id="tarifaCarro">
-                                <a class="btn btn-primary" id="botonTarifa" onclick="calcularTarifa()">Calcular Tarifa</a>
-                            </div>
-
-                            <div class="d-flex justify-content-between">
-                                <button type="submit" class="btn btn-success btn-custom">Reservar</button>
-                                <a href="/" class="btn btn-danger btn-custom">Volver atras</a>
-                            </div>
-                        </form> 
+                                <div class="d-flex justify-content-between">
+                                    <% if (user && vehiculo.disponibilidad) { %>
+                                        <!-- Mostrar botón de reservar solo si hay sesión activa y el vehículo está disponible -->
+                                        <button type="submit" class="btn btn-success btn-custom">Reservar</button>
+                                    <% } else if (!vehiculo.disponibilidad) { %>
+                                        <p class="text-danger">Este vehículo ya está reservado.</p>
+                                    <% } else { %>
+                                        <p class="text-danger">Inicia sesión para hacer una reserva.</p>
+                                    <% } %>
+                                    <a href="/" class="btn btn-danger btn-custom">Volver atrás</a>
+                                </div>
+                            </form> 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <% } %>
+    <% } %>    
+
     <script>
+        // Captura mensajes de éxito o error desde la URL
+        const params = new URLSearchParams(window.location.search);
+        const errorMessage = params.get('error');
+        const successMessage = params.get('success');
+
+        if (errorMessage) {
+            const alertBox = document.getElementById('alert-message');
+            alertBox.classList.remove('d-none', 'alert-success');
+            alertBox.classList.add('alert-danger');
+            alertBox.innerText = errorMessage;
+        }
+
+        if (successMessage) {
+            const alertBox = document.getElementById('alert-message');
+            alertBox.classList.remove('d-none', 'alert-danger');
+            alertBox.classList.add('alert-success');
+            alertBox.innerText = successMessage;
+        }
+
         function calcularTarifa() {
             const fechaIn = document.getElementById('fechaRetirada').value;
             const fechaOut = document.getElementById('fechaDevolusion').value;

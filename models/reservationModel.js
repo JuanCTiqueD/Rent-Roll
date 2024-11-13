@@ -7,6 +7,22 @@ const Reservation = sequelize.define('Reservation', {
     primaryKey: true,
     autoIncrement: true,
   },
+  id_usuario: { // Clave foránea hacia usuarios
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'usuarios',
+      key: 'id_usuarios'
+    },
+    allowNull: false
+  },
+  id_vehiculo: { // Clave foránea hacia vehiculos
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'vehiculos',
+      key: 'id_vehiculo'
+    },
+    allowNull: true
+  },
   fecha_inicio: {
     type: DataTypes.DATE,
     allowNull: false,

@@ -54,7 +54,8 @@ exports.getVehicleById = async (req, res) => {
   try {
     const vehicle = await Vehicle.findByPk(req.params.id);
     if (vehicle) {
-      res.render('vehicles/vehicle', { vehiculo: vehicle });
+      const user = req.session.user || null; // Obtener el usuario de la sesión
+      res.render('vehicles/vehicle', { vehiculo: vehicle, user });
     } else {
       res.status(404).json({ error: 'Vehículo no encontrado' });
     }
