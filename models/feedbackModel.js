@@ -1,8 +1,7 @@
-// models/feedbackModel.js
+// feedbackModel.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
-const User = require('./userModel');
-const Reservation = require('./reservationModel');
+const User = require('./userModel'); // Importa el modelo User
 
 const Feedback = sequelize.define('Feedback', {
   id_feedback: {
@@ -10,38 +9,38 @@ const Feedback = sequelize.define('Feedback', {
     primaryKey: true,
     autoIncrement: true,
   },
-  id_usuario: {
-    type: DataTypes.INTEGER,
+  comentario: {
+    type: DataTypes.TEXT,
     allowNull: false,
-    references: {
-      model: User,
-      key: 'id_usuarios',
-    },
-  },
-  id_reserva: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Reservation,
-      key: 'id_reserva',
-    },
   },
   calificacion: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  comentario: {
-    type: DataTypes.TEXT,
-    allowNull: false,
+  id_usuario: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'usuarios',
+      key: 'id_usuarios',
+    },
+  },
+  id_reserva: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'reservas',
+      key: 'id_reserva',
+    },
   },
   fecha: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
-    allowNull: false,
   },
 }, {
   tableName: 'feedback',
   timestamps: false,
 });
+
+// Define la asociación con User
+Feedback.belongsTo(User, { foreignKey: 'id_usuario', as: 'Usuario' });
 
 module.exports = Feedback;

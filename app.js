@@ -11,6 +11,7 @@ const Location = require('./models/locationModel');
 const VehicleType = require('./models/vehicleTypeModel');
 const Vehicle = require('./models/vehicleModel');
 const Reservation = require('./models/reservationModel');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 const PORT = serverConfig.port;
@@ -38,6 +39,7 @@ app.use('/auth', authRoutes);
 app.use('/vehicles', vehicleRoutes);
 app.use('/reservations', reservationRoutes);
 app.use('/feedback', feedbackRoutes);
+app.use('/admin', adminRoutes);
 
 // Ruta principal para cargar ubicaciones, tipos de vehículos, vehículos disponibles y reservas del usuario
 app.get('/', async (req, res) => {

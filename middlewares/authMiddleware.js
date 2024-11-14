@@ -19,6 +19,7 @@ exports.verifyToken = async (req, res, next) => {
   }
 };
 
+
 // Middleware para verificar permisos
 exports.checkPermission = (permissionName) => {
   return async (req, res, next) => {
@@ -41,3 +42,17 @@ exports.checkPermission = (permissionName) => {
     }
   };
 };
+
+// middlewares/authMiddleware.js
+exports.ensureAdmin = (req, res, next) => {
+  const user = req.session.user;
+  console.log("Usuario actual:", user); // Log para verificar el usuario
+  if (user && user.id_rol === 1) {
+      return next();
+  } else {
+      const error = new Error('Acceso denegado: Solo los administradores pueden acceder a esta página.');
+      error.status = 403;
+      return next(error);
+  }
+};
+

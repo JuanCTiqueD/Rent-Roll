@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/admin.css">
+    <title>Administrador - Rent&Roll</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="/images/logo.png" alt="Rent-roll" height="50" />
+                </a>
+                <div class="d-flex flex-row-reverse">
+                    <a class="m-2" href="/" style="color: white; text-decoration: none">
+                        Logout
+                        <img src="/images/personaLogo.png" alt="Persona" style="width: 30px; height: 30px" />
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Panel de Administración</h1>
+
+        <!-- Sección de Vehículos -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="h5 mb-0">Gestión de Vehículos</h2>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#vehicleModal">Agregar Vehículo</button>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Año</th>
+                            <th>Precio/día</th>
+                            <th>Disponibilidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% vehicles.forEach(vehicle => { %>
+                            <tr>
+                                <td><%= vehicle.id_vehiculo %></td>
+                                <td><%= vehicle.marca %></td>
+                                <td><%= vehicle.modelo %></td>
+                                <td><%= vehicle.anio %></td>
+                                <td>$<%= vehicle.precio_dia %></td>
+                                <td><%= vehicle.disponibilidad ? 'Disponible' : 'Reservado' %></td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm">Editar</button>
+                                    <button class="btn btn-danger btn-sm">Eliminar</button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sección de Roles y Permisos -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="h5 mb-0">Gestión de Roles y Permisos</h2>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rolePermissionModal">Agregar Rol/Permiso</button>
+            </div>
+            <div class="card-body">
+                <h4>Roles</h4>
+                <table class="table table-striped mb-4">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre del Rol</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% roles.forEach(role => { %>
+                            <tr>
+                                <td><%= role.id_rol %></td>
+                                <td><%= role.nombre_rol %></td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm">Editar</button>
+                                    <button class="btn btn-danger btn-sm">Eliminar</button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+
+                <h4>Permisos</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre del Permiso</th>
+                            <th>Descripción</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% permissions.forEach(permission => { %>
+                            <tr>
+                                <td><%= permission.id_permiso %></td>
+                                <td><%= permission.nombre_permiso %></td>
+                                <td><%= permission.descripcion %></td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm">Editar</button>
+                                    <button class="btn btn-danger btn-sm">Eliminar</button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sección de Reservas -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="h5 mb-0">Gestión de Reservas</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID Reserva</th>
+                            <th>Vehículo</th>
+                            <th>Cliente</th>
+                            <th>Precio/día</th>
+                            <th>Fecha de Inicio</th>
+                            <th>Fecha de Fin</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% reservations.forEach(reserva => { %>
+                            <tr>
+                                <td><%= reserva.id_reserva %></td>
+                                <td><%= reserva.Vehicle ? reserva.Vehicle.modelo : 'N/A' %></td>
+                                <td><%= reserva.User ? reserva.User.nombre : 'N/A' %></td>
+                                <td>$<%= reserva.Vehicle ? reserva.Vehicle.precio_dia : 'N/A' %></td>
+                                <td><%= reserva.fecha_inicio %></td>
+                                <td><%= reserva.fecha_fin %></td>
+                                <td><%= reserva.estado %></td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm">Cancelar Reserva</button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sección de Comentarios -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="h5 mb-0">Comentarios de Usuarios</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Usuario</th>
+                            <th>Comentario</th>
+                            <th>Calificación</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% feedbacks.forEach(feedback => { %>
+                            <tr>
+                                <td><%= feedback.id_feedback %></td>
+                                <td><%= feedback.Usuario ? feedback.Usuario.nombre : 'N/A' %></td>
+                                <td><%= feedback.comentario %></td>
+                                <td><%= feedback.calificacion %>/10</td>
+                                <td><%= feedback.fecha %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

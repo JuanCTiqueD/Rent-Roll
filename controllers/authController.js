@@ -41,10 +41,15 @@ exports.login = async (req, res) => {
     req.session.user = {
       id_usuario: user.id_usuarios,
       nombre: user.nombre,
-      rol: user.id_rol
+      id_rol: user.id_rol,
     };
 
-    res.redirect('/'); // Redirige a la página principal
+     // Redirige según el rol
+     if (user.id_rol === 1) { // Administrador
+      return res.redirect('/admin');
+    } else { // Cliente
+        return res.redirect('/');
+    }
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
     res.redirect('/auth/login?error=Ocurrió un error al iniciar sesión');
